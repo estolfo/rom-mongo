@@ -1,15 +1,10 @@
-require 'origin'
-
 module ROM
   module Mongo
     class Dataset
-      class Criteria
-        include Origin::Queryable
-      end
 
-      def initialize(collection, criteria = Criteria.new)
+      def initialize(collection, criteria = nil)
         @collection = collection
-        @criteria = criteria
+        @criteria = criteria || collection.find
       end
 
       attr_reader :collection
@@ -17,7 +12,7 @@ module ROM
       attr_reader :criteria
 
       def find(criteria = {})
-        Dataset.new(collection, Criteria.new.where(criteria))
+        Dataset.new(collection, collection.find(criteria))
       end
 
       def to_a
@@ -51,7 +46,10 @@ module ROM
       end
 
       def only(fields)
-        dataset(criteria.only(fields))
+        projection_doc = fields.inject({}) do |doc, f|
+          doc.merge!(f => 1)
+        end
+        dataset(criteria.projection(projection_doc))
       end
 
       def without(fields)
@@ -66,9 +64,10 @@ module ROM
         dataset(criteria.skip(value))
       end
 
-      def order(value)
-        dataset(criteria.order(value))
+      def sort(value)
+        dataset(criteria.sort(value))
       end
+      alias :order :sort
 
       private
 

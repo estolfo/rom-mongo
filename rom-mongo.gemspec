@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "rom-core", "~> 4.0"
   spec.add_runtime_dependency "mongo", "~> 2.2"
-  spec.add_runtime_dependency "origin"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

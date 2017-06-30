@@ -13,18 +13,18 @@ RSpec.describe ROM::Mongo::Relation do
 
   describe '#order' do
     it 'sorts documents' do
-      expect(users.order(name: :asc).only(:name).without(:_id).to_a.map(&:to_h)).
+      expect(users.order(name: Mongo::Index::ASCENDING).only(:name).without(:_id).to_a.map(&:to_h)).
         to eql([{name: 'Jane',}, {name: 'Joe'}])
 
-      expect(users.order(name: :desc).only(:name).without(:_id).to_a.map(&:to_h)).
+      expect(users.order(name: Mongo::Index::DESCENDING).only(:name).without(:_id).to_a.map(&:to_h)).
         to eql([{name: 'Joe'}, {name: 'Jane'}])
     end
 
     it 'supports mutli-field sorting' do
-      expect(users.order(name: :asc, email: :asc).only(:name).without(:_id).to_a.map(&:to_h)).
+      expect(users.order(name: Mongo::Index::ASCENDING, email: Mongo::Index::ASCENDING).only(:name).without(:_id).to_a.map(&:to_h)).
         to eql([{name: 'Jane',}, {name: 'Joe'}])
 
-      expect(users.order(email: :asc, name: :asc).only(:name).without(:_id).to_a.map(&:to_h)).
+      expect(users.order(email: Mongo::Index::ASCENDING, name: Mongo::Index::ASCENDING).only(:name).without(:_id).to_a.map(&:to_h)).
         to eql([{name: 'Joe',}, {name: 'Jane'}])
     end
   end
