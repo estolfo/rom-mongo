@@ -1,3 +1,5 @@
+require 'rom/mongo/builder'
+
 module ROM
   module Mongo
     class Dataset
@@ -46,10 +48,7 @@ module ROM
       end
 
       def only(fields)
-        projection_doc = fields.inject({}) do |doc, f|
-          doc.merge!(f => 1)
-        end
-        dataset(criteria.projection(projection_doc))
+        dataset(criteria.projection(Builder.to_projection(fields)))
       end
 
       def without(fields)
@@ -65,7 +64,7 @@ module ROM
       end
 
       def sort(value)
-        dataset(criteria.sort(value))
+        dataset(criteria.sort(Builder.to_sort_doc(value)))
       end
       alias :order :sort
 
