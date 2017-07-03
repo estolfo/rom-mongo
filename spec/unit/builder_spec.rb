@@ -2,10 +2,10 @@ require 'spec_helper'
 
 RSpec.describe ROM::Mongo::Builder do
 
-  describe '#to_projection' do
+  describe '#to_projection_doc' do
 
     let(:result) do
-      described_class.to_projection([:name, :address])
+      described_class.to_projection_doc([:name, :address])
     end
 
     it 'converts the fields into a document with 1 values' do
